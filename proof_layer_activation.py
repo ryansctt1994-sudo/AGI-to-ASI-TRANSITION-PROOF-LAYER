@@ -1,8 +1,3 @@
-
----
-
-## **File 2: proof_layer_activation.py**
-```python
 #!/usr/bin/env python3
 """
 PROOF LAYER ACTIVATION

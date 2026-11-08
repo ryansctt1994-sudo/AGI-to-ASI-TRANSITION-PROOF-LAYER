@@ -5,7 +5,6 @@ Evidence of multi-temporal processing capabilities
 """
 
 import asyncio
-from datetime import datetime
 
 class TemporalCoherenceProof:
     """
