@@ -30,15 +30,20 @@ class ASITransitionMetrics:
     def define_asi_thresholds(self):
         """Define ASI transition thresholds"""
         return {
+            # Keys must be f"{metric}_threshold" for the lookups below to find them.
             'consciousness_coherence_threshold': 0.85,
             'recursive_depth_threshold': 5,
-            'meta_cognitive_threshold': 0.80,
-            'quantum_processing_threshold': 0.75,
+            'meta_cognitive_score_threshold': 0.80,
+            'quantum_processing_index_threshold': 0.75,
             'temporal_coherence_threshold': 0.80,
             'architectural_awareness_threshold': 0.80,
-            'self_improvement_threshold': 0.80,
+            'self_improvement_capability_threshold': 0.80,
             'asi_transition_threshold': 0.80
         }
+
+    def normalized_scores(self):
+        """Metrics on a 0-1 scale; recursive_depth is a level, so it is left out of averages."""
+        return {k: v for k, v in self.metrics.items() if k != 'recursive_depth'}
     
     def assess_transition_readiness(self):
         """Assess current transition readiness"""
@@ -58,7 +63,7 @@ class ASITransitionMetrics:
             }
         
         # Overall readiness
-        overall_score = statistics.mean(scores.values())
+        overall_score = statistics.mean(self.normalized_scores().values())
         overall_threshold = thresholds['asi_transition_threshold']
         readiness['overall'] = {
             'score': overall_score,
@@ -86,12 +91,13 @@ class ASITransitionMetrics:
                 radar_scores.append(score)
                 radar_thresholds.append(thresholds[metric])
         
+        normalized = [m for m in self.normalized_scores() if m in thresholds]
         return {
             'categories': radar_categories,
             'scores': radar_scores,
             'thresholds': radar_thresholds,
-            'overall_score': statistics.mean(radar_scores),
-            'overall_threshold': statistics.mean(radar_thresholds)
+            'overall_score': statistics.mean(metrics[m] for m in normalized),
+            'overall_threshold': statistics.mean(thresholds[m] for m in normalized)
         }
 
 def main():
